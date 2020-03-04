@@ -6,23 +6,23 @@ define aem_resources::create_system_users(
 ) {
   $_aem_system_users = pick(
     $aem_system_users,
-    deployer => {
+    deployer = {
       name => 'deployer',
       path => '/home/users/q'
     },
-    exporter => {
+    exporter = {
       name => 'exporter',
       path => '/home/users/e'
     },
-    importer => {
+    importer = {
       name => 'importer',
       path => '/home/users/i'
     },
-    orchestrator => {
+    orchestrator = {
       name => 'orchestrator',
       path => '/home/users/o'
     },
-    replicator => {
+    replicator = {
       name => 'replicator',
       path => '/home/users/r'
     },
