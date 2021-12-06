@@ -9,6 +9,7 @@ define aem_resources::author_publish_enable_ssl(
   $aem_username = undef,
   $aem_password = undef,
   $aem_id = 'aem',
+  $timeout = 600000,
 ) {
 
   aem_node { "[${aem_id}] Ensure org.apache.felix.http OSGI config exists":
@@ -53,6 +54,30 @@ define aem_resources::author_publish_enable_ssl(
     aem_password => $aem_password,
     aem_id       => $aem_id,
   } -> aem_aem { "[${aem_id}] Wait until org.osgi.service.http.port.secure property is set":
+    ensure       => login_page_is_ready,
+    aem_username => $aem_username,
+    aem_password => $aem_password,
+    aem_id       => $aem_id,
+  } -> aem_config_property { "[${aem_id}] Create org.apache.felix.http.timeout property":
+    ensure           => present,
+    name             => 'org.apache.felix.http.timeout',
+    type             => 'Long',
+    value            => $timeout,
+    run_mode         => $run_mode,
+    config_node_name => 'org.apache.felix.http',
+    aem_username     => $aem_username,
+    aem_password     => $aem_password,
+    aem_id           => $aem_id,
+  } -> exec { "[${aem_id}] Wait org.apache.felix.http.timeout property":
+    command => 'sleep 5',
+    path    => ['/usr/bin', '/usr/sbin', '/bin'],
+  } -> aem_aem { "[${aem_id}] Wait until aem health check is ok org.apache.felix.http.timeout":
+    ensure       => aem_health_check_is_ok,
+    tags         => 'deep',
+    aem_username => $aem_username,
+    aem_password => $aem_password,
+    aem_id       => $aem_id,
+  } -> aem_aem { "[${aem_id}] Wait until org.apache.felix.http.timeout property is set":
     ensure       => login_page_is_ready,
     aem_username => $aem_username,
     aem_password => $aem_password,

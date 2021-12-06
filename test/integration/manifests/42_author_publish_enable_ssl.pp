@@ -25,4 +25,5 @@ aem_resources::author_publish_enable_ssl { 'Enable author/publish SSL':
   keystore_key_alias  => 'cqse',
   truststore          => '/tmp/shinesolutions/puppet-aem-resources/aem.ts',
   truststore_password => 'sometruststorepassword',
+  timeout             => 6000000,
 }
