@@ -254,7 +254,7 @@ define aem_resources::author_publish_enable_ssl(
     ensure           => present,
     name             => 'org.apache.felix.https.enable',
     type             => 'Boolean',
-    value            => true,
+    value            => false,
     run_mode         => $run_mode,
     config_node_name => 'org.apache.felix.http',
     aem_username     => $aem_username,
